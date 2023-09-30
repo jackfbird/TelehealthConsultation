@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telehealth-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telehealth
+  template:
+    metadata:
+      labels:
+        app: telehealth
+    spec:
+      containers:
+      - name: telehealth-container
+        image: telehealthconsultation:latest
+        ports:
+        - containerPort: 80
