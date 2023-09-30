@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "TelehealthConsultation.Protos";
+
+package telehealth;
+
+service Telehealth {
+  rpc BookAppointment(BookAppointmentRequest) returns (BookAppointmentResponse);
+  rpc GetPatientInfo(GetPatientInfoRequest) returns (GetPatientInfoResponse);
+}
+
+message BookAppointmentRequest {
+  int32 doctorId = 1;
+  int32 patientId = 2;
+  google.protobuf.Timestamp startTime = 3;
+  google.protobuf.Timestamp endTime = 4;
+}
+
+message BookAppointmentResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetPatientInfoRequest {
+  int32 patientId = 1;
+}
+
+message GetPatientInfoResponse {
+  string patientName = 1;
+  google.protobuf.Timestamp dateOfBirth = 2;
+  string email = 3;
+}

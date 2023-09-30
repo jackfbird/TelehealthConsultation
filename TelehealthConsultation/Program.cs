@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
 using TelehealthConsultation.Data;
-using TelehealthConsultation.Models;
+using TelehealthConsultation.Interfaces;
+using TelehealthConsultation.Services;
+using TelehealthConsultation.Settings;
 
 namespace TelehealthConsultation
 {
@@ -12,44 +12,44 @@ namespace TelehealthConsultation
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-            var connection = String.Empty;
+            // Configuration
             if (builder.Environment.IsDevelopment())
             {
                 builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
-                connection = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
             }
-            else
-            {
-                connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
-            }
+
+            var connection = builder.Environment.IsDevelopment()
+                ? builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")
+                : Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
+
+            // Registering services
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+            builder.Services.AddGrpc();
 
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(connection));
 
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            // Kafka Configurations
+            var kafkaSettings = new KafkaSettings
             {
-            }
+                BootstrapServers = "localhost:9092",
+                TopicName = "telehealth_bookings"
+            };
+
+            builder.Services.AddSingleton(kafkaSettings);
+            builder.Services.AddScoped<IKafkaProducerService, KafkaProducerService>();
+
+            builder.Services.AddScoped<ITelehealthService, TelehealthService>();
+
+            var app = builder.Build();
 
             app.UseSwagger();
             app.UseSwaggerUI();
-
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
         }
     }
