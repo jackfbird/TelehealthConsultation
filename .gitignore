@@ -68,3 +68,6 @@ ehthumbs.db
 ScaffoldingReadMe.txt
 
 .vs/
+
+/TelehealthConsultation/appsettings.Development.json
+appsettings.Development.json
