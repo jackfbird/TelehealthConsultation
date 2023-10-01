@@ -34,7 +34,7 @@ namespace TelehealthConsultation
             // Kafka Configurations
             var kafkaSettings = new KafkaSettings
             {
-                BootstrapServers = "localhost:9092",
+                BootstrapServers = "localhost:29092",
                 TopicName = "telehealth_bookings"
             };
 
