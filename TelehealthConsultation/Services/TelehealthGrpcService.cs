@@ -21,21 +21,30 @@ namespace TelehealthConsultation.Services
 
         public override async Task<BookAppointmentResponse> BookAppointment(BookAppointmentRequest request, ServerCallContext context)
         {
-            var booking = new Booking
+            try
             {
-                DoctorId = request.DoctorId,
-                PatientId = request.PatientId,
-                StartTime = request.StartTime.ToDateTime(),
-                EndTime = request.EndTime.ToDateTime()
-            };
+                var booking = new Booking
+                {
+                    PatientId = request.PatientId,
+                    DoctorId = request.DoctorId,
+                    BookingDate = DateTime.UtcNow,
+                    Status = "Booked",
+                    StartTime = request.StartTime.ToDateTime(),
+                    EndTime = request.EndTime.ToDateTime()
+                };
 
-            var result = await _consultationService.BookAppointmentAsync(booking);
+                var result = await _consultationService.BookAppointmentAsync(booking);
 
-            return new BookAppointmentResponse
+                return new BookAppointmentResponse
+                {
+                    Success = result.Success,
+                    Message = result.Message
+                };
+            }
+            catch (Exception ex)
             {
-                Success = result.Success,
-                Message = result.Message
-            };
+                throw new RpcException(new Status(StatusCode.Unknown, $"An unknown error occurred: {ex.Message}"));
+            }
         }
 
         public override async Task<GetPatientInfoResponse> GetPatientInfo(GetPatientInfoRequest request, ServerCallContext context)

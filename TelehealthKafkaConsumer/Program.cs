@@ -8,7 +8,7 @@ namespace TelehealthKafkaConsumer
 {
     internal class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
             var configuration = new ConfigurationBuilder()
@@ -17,12 +17,20 @@ namespace TelehealthKafkaConsumer
                 .AddJsonFile($"appsettings.{environment}.json", optional: true)
                 .Build();
 
-            var host = CreateHostBuilder(args, configuration).Build();
+            var builder = CreateHostBuilder(args, configuration).Build();
 
-            var kafkaConsumerService = host.Services.GetRequiredService<KafkaConsumerService>();
-            kafkaConsumerService.Start();
+            TelehealthGrpcClientService.CallGrpcService();
 
-            host.Run();
+            var cts = new CancellationTokenSource();
+            Console.CancelKeyPress += (_, e) =>
+            {
+                e.Cancel = true;
+                cts.Cancel();
+            };
+
+            var kafkaConsumerService = builder.Services.GetService<KafkaConsumerService>() ?? throw new NullReferenceException("kafkaConsumerService is null");
+            kafkaConsumerService.Listen(cts.Token);
+            builder.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args, IConfiguration configuration) =>

@@ -22,10 +22,6 @@ namespace TelehealthConsultation
                 ? builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")
                 : Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
 
-            // Registering services
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
             builder.Services.AddGrpc();
 
             builder.Services.AddDbContext<AppDbContext>(options =>
@@ -34,22 +30,19 @@ namespace TelehealthConsultation
             // Kafka Configurations
             var kafkaSettings = new KafkaSettings
             {
-                BootstrapServers = "localhost:29092",
-                TopicName = "telehealth_bookings"
+                BootstrapServers = builder.Configuration["Kafka:BootstrapServers"],
+                Topic = builder.Configuration["Kafka:Topic"]
             };
 
             builder.Services.AddSingleton(kafkaSettings);
             builder.Services.AddScoped<IKafkaProducerService, KafkaProducerService>();
-
+            builder.Services.AddScoped<IConsultationService, ConsultationService>();
             builder.Services.AddScoped<ITelehealthService, TelehealthService>();
 
             var app = builder.Build();
 
-            app.UseSwagger();
-            app.UseSwaggerUI();
-            app.UseHttpsRedirection();
-            app.UseAuthorization();
-            app.MapControllers();
+            // Configure the gRPC service.
+            app.MapGrpcService<TelehealthGrpcService>();
             app.Run();
         }
     }
