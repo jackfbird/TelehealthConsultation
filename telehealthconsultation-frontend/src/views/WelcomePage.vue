@@ -25,7 +25,7 @@ export default {
 <style scoped>
 .welcome-container {
   height: 100vh;
-  background: linear-gradient(135deg, #e3f2fd, #90caf9); /* Soft shades of blue */
+  background: linear-gradient(135deg, #e3f2fd, #90caf9); 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,10 +37,10 @@ export default {
   padding: 40px;
   border-radius: 15px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-  width: 650px; /* Fixed width */
-  height: 450px; /* Fixed height */
+  width: 650px; 
+  height: 450px; 
   position: relative;
-  overflow-y: auto; /* In case the content overflows due to the fixed height, this allows scrolling */
+  overflow-y: auto; 
 }
 
 .button-section {
@@ -52,9 +52,9 @@ export default {
 .btn-primary,
 .btn-outline-primary {
   border: none;
-  padding: 10px 30px; /* Increased the horizontal padding to give more space */
-  width: 170px; /* Increased width to fit the text on one line */
-  font-size: 0.9em; /* Slightly reduced the font size for a better fit */
+  padding: 10px 30px; 
+  width: 170px; 
+  font-size: 0.9em; 
 }
 
 .btn-primary {
@@ -75,20 +75,20 @@ export default {
 
 h1.display-4 {
   margin-top: 65px !important;
-  margin-bottom: 70px !important; /* Adjusted spacing between the title and buttons */
+  margin-bottom: 70px !important;
 }
 
 .button-section {
   display: flex;
-  gap: 30px; /* Increased gap between the buttons */
+  gap: 30px; 
   justify-content: center;
-  margin-top: 40px; /* Adjusted margin to give more space between buttons */
+  margin-top: 40px;
 }
 
 .btn-primary,
 .btn-outline-primary {
-  padding: 15px 50px; /* Increased the padding to make the buttons larger */
-  width: 250px; /* Increased width */
-  font-size: 1.1em; /* Increased the font size for more prominence */
+  padding: 15px 50px; 
+  width: 250px; 
+  font-size: 1.1em;
 }
 </style>
