@@ -8,7 +8,7 @@ namespace TelehealthKafkaConsumer
 {
     internal class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
             var configuration = new ConfigurationBuilder()
@@ -18,8 +18,6 @@ namespace TelehealthKafkaConsumer
                 .Build();
 
             var builder = CreateHostBuilder(args, configuration).Build();
-
-            TelehealthGrpcClientService.CallGrpcService();
 
             var cts = new CancellationTokenSource();
             Console.CancelKeyPress += (_, e) =>

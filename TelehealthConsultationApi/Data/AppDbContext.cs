@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TelehealthConsultation.Models;
+using TelehealthConsultationApi.Models;
 
-namespace TelehealthConsultation.Data
+namespace TelehealthConsultationApi.Data
 {
     public class AppDbContext : DbContext
     {
@@ -11,15 +11,6 @@ namespace TelehealthConsultation.Data
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Booking> Bookings { get; set; }
-
         public DbSet<TimeSlot> TimeSlots { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<Doctor>().ToTable("Doctors");
-            modelBuilder.Entity<TimeSlot>().ToTable("TimeSslots");
-        }
     }
 }

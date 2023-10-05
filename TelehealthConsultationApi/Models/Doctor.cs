@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TelehealthConsultation.Models
+namespace TelehealthConsultationApi.Models
 {
     public class Doctor
     {
@@ -13,7 +13,6 @@ namespace TelehealthConsultation.Models
 
         [MaxLength(100)]
         public string? Specialization { get; set; }
-
         public ICollection<TimeSlot> TimeSlots { get; set; }
     }
 }

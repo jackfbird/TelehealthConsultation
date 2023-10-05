@@ -29,7 +29,6 @@ namespace TelehealthKafkaConsumer.Services
 
         public async void Listen(CancellationToken cancellationToken)
         {
-
             //create the topic if required
             using (var adminClient = new AdminClientBuilder(new AdminClientConfig { BootstrapServers = _settings.BootstrapServers }).Build())
             {
@@ -56,15 +55,19 @@ namespace TelehealthKafkaConsumer.Services
                         if (consumeResult.Message != null)
                         {
                             _logger.LogInformation($"Received message at {consumeResult.TopicPartitionOffset}: {consumeResult.Message.Value}");
+                            Console.WriteLine($"Received message at {consumeResult.TopicPartitionOffset}: {consumeResult.Message.Value}");
                         }
                     }
                     catch (ConsumeException e)
                     {
                         _logger.LogError($"Consume error: {e.Error.Reason}");
+                        Console.WriteLine($"Consume error: {e.Error.Reason}");
+
                     }
                     catch (Exception ex)
                     {
                         _logger.LogError($"Exception error: {ex.Message}");
+                        Console.WriteLine($"Exception error: {ex.Message}");
                     }
                 }
             }

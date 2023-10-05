@@ -72,3 +72,4 @@ ScaffoldingReadMe.txt
 /TelehealthConsultation/appsettings.Development.json
 appsettings.Development.json
 .env
+node_modules

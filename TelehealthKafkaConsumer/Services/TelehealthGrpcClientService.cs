@@ -9,7 +9,6 @@ namespace TelehealthKafkaConsumer.Services
     {
         public TelehealthGrpcClientService()
         {
-
         }
 
         public static void CallGrpcService()
